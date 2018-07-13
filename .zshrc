@@ -113,7 +113,6 @@ antigen bundle ruby
 antigen bundle sudo
 antigen bundle vagrant
 antigen bundle virtualenv
-antigen bundle zsh-users/zsh-syntax-highlighting
 
 # See other themes from https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 antigen theme risto
