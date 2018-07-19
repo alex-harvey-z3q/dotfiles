@@ -10,9 +10,20 @@ bash git/dotfiles/install.sh
 EOF
 fi
 
-for i in git/dotfiles/.* ; do
-  [ "$i" == 'git/dotfiles/.' ] && continue
-  [ "$i" == 'git/dotfiles/..' ] && continue
-  [ "$i" == 'git/dotfiles/.git' ] && continue
-  ln -s $i
+for i in $(
+  find git/dotfiles \
+    -not \( -path git/dotfiles/.git -prune \) \
+    -not \( -path git/dotfiles/install.sh -prune \) \
+    -type f
+  ) ; do
+
+  path=$(dirname $(echo $i | sed -e 's|git/dotfiles/||'))
+
+  if [ -z "$path" ] ; then
+    ln -s $i
+  else
+    mkdir -p $path
+    cd $path && ln -s $OLDPWD/$i && cd $OLDPWD
+  fi
+
 done
