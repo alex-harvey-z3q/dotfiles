@@ -115,6 +115,6 @@ antigen bundle vagrant
 antigen bundle virtualenv
 
 # See other themes from https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-antigen theme risto
+antigen theme avit
 
 antigen apply
