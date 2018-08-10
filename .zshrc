@@ -23,6 +23,10 @@ delete_all_merged_branchs() {
   git branch --merged | egrep -v "(^\*|master$)" | xargs git branch -d
 }
 
+git_grep() {
+  git grep $1 $(git rev-list --all)
+}
+
 # Beaker.
 #
 vagrant_ssh() {
