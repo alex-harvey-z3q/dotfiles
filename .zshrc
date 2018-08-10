@@ -4,7 +4,6 @@ source ~/.zshrc.cmd
 export PATH="$PATH:$GOPATH/bin:/usr/local/packer:/Users/alexharvey/git/home/create_specs:/Users/alexharvey/git/cmd/sync_spec:/Users/alexharvey/git/cmd/cmd-internal/cmd-scripts/git"
 export TERM='xterm-256color'
 
-alias ls='/bin/ls -F'
 alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
 alias grpe=grep
 
@@ -118,3 +117,5 @@ antigen bundle virtualenv
 antigen theme avit
 
 antigen apply
+
+alias ls='/bin/ls -F'
