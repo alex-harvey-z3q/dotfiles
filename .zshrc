@@ -64,7 +64,7 @@ vagrant_destroy() {
 }
 
 set_beaker_package_proxy() {
-  ipaddr=$(ifconfig en0 | awk '/inet/ {print $2}')
+  ipaddr=$(ifconfig en0 | awk '$1 == "inet" {print $2}')
   export BEAKER_PACKAGE_PROXY=http://${ipaddr}:3128/
   echo "BEAKER_PACKAGE_PROXY is $BEAKER_PACKAGE_PROXY"
 }
