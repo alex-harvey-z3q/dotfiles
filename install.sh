@@ -20,11 +20,10 @@ for i in $(
   path=$(dirname $(echo $i | sed -e 's|git/home/dotfiles/||'))
 
   if [ "$path" == "." ] ; then
-    echo ln -s $i in $(pwd)
     ln -s $i
   else
     oldpwd=$(pwd)
-    cd $path && ln -s $OLDPWD/$i
+    cd $path && ln -s $oldpwd/$i
     cd $oldpwd
   fi
 
