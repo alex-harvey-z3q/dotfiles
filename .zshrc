@@ -1,7 +1,7 @@
 source ~/.zshrc.secrets
 source ~/.zshrc.cmd
 
-export PATH="$PATH:$GOPATH/bin:/usr/local/packer:/Users/alexharvey/git/create_specs:/Users/alexharvey/git/sync_spec"
+export PATH="$PATH:$GOPATH/bin:/usr/local/packer:/Users/alexharvey/git/home/create_specs:/Users/alexharvey/git/cmd/sync_spec:/Users/alexharvey/git/cmd/cmd-internal/cmd-scripts/git"
 export TERM='xterm-256color'
 
 alias ls='/bin/ls -F'
