@@ -12,3 +12,6 @@
 	br = branch
 	st = status
 	pm = pull origin master
+
+[color]
+	ui = auto
