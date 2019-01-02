@@ -15,6 +15,10 @@ stack_overflow_syntax() {
   echo '<!-- language: '$lang' -->'
 }
 
+remove_trailing_newlines() {
+  perl -pli -e 's/\s+$//' $1
+}
+
 # Git functions.
 #
 alias recommit='git reset --soft HEAD~ ; git add . ; git commit -e -F .git/COMMIT_EDITMSG'
