@@ -1,3 +1,5 @@
+# vim:ft=sh
+
 source ~/.zshrc.secrets
 source ~/.zshrc.cmd
 
