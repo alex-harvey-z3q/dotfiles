@@ -9,9 +9,6 @@ export TERM='xterm-256color'
 alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
 alias grpe=grep
 
-let_to_num() {
-  l=$1 ; b=$(LC_CTYPE=C printf '%d' "'$l'") ; (( b = (b - 96) % 10 )) ; echo $b
-}
 
 # Git functions.
 #
