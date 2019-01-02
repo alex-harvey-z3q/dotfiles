@@ -9,6 +9,11 @@ export TERM='xterm-256color'
 alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
 alias grpe=grep
 
+stack_overflow_syntax() {
+  lang=lang-none
+  [ ! -z $1 ] && lang=$1
+  echo '<!-- language: '$lang' -->'
+}
 
 # Git functions.
 #
