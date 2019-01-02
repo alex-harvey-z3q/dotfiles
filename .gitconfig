@@ -4,6 +4,9 @@
 [includeIf "gitdir:~/git/cmd/**"]
   path = .gitconfig-cmd
 
+[includeIf "gitdir:~/git/nab/**"]
+  path = .gitconfig-nab
+
 [alias]
 	co = checkout
 	br = branch
