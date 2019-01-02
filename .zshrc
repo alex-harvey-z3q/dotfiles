@@ -92,9 +92,9 @@ use_rvm
 echo "RVM is on"
 
 mv_large_files() {
-  for i in ~/Desktop/*-large ~/Downloads/*-large
+  for i in ~/Desktop/*large
   do
-    j=$(echo $i |sed -e 's/-large$//')
+    j=$(echo $i |sed -e 's/.large$//')
     mv $i $j
   done
 }
