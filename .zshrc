@@ -99,6 +99,15 @@ mv_large_files() {
   done
 }
 
+# Pyenv.
+#
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 # Puppet Blacksmith.
 #
 export BLACKSMITH_FORGE_URL=https://forgeapi.puppetlabs.com

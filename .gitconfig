@@ -7,6 +7,12 @@
 [includeIf "gitdir:~/git/nab/**"]
   path = .gitconfig-nab
 
+[includeIf "gitdir:~/git/fox/**"]
+  path = .gitconfig-fox
+
+[includeIf "gitdir:~/git/quadnova/**"]
+  path = .gitconfig-quadnova
+
 [alias]
 	co = checkout
 	br = branch
