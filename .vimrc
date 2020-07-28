@@ -11,3 +11,7 @@ highlight nonascii guibg=Red ctermbg=1 term=standout
 au BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 au BufNewFile,BufRead *.cr setlocal ft=ruby
 autocmd BufNewFile,BufRead */_posts/*.md set syntax=liquid
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
