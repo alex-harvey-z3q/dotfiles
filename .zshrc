@@ -9,14 +9,8 @@ export TERM='xterm-256color'
 alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
 alias grpe=grep
 
-stack_overflow_syntax() {
-  lang=lang-none
-  [ ! -z $1 ] && lang=$1
-  echo '<!-- language: '$lang' -->'
-}
-
 remove_trailing_newlines() {
-  perl -pli -e 's/\s+$//' $1
+  perl -pli -e 's/\s+$//' "$1"
 }
 
 # Git functions.
@@ -24,10 +18,10 @@ remove_trailing_newlines() {
 alias recommit='git reset --soft HEAD~ ; git add . ; git commit -e -F .git/COMMIT_EDITMSG'
 
 rebase() {
-  branch=`git branch |awk '/^\*/ {print $2}'`
+  local branch="$(git branch | awk '/^\*/ {print $2}')"
   git checkout master
   git pull
-  git checkout $branch
+  git checkout "$branch"
   git rebase master
 }
 
@@ -36,12 +30,13 @@ delete_all_merged_branchs() {
 }
 
 git_grep() {
-  git grep $1 $(git rev-list --all)
+  git grep "$1" "$(git rev-list --all)"
 }
 
 # Beaker.
 #
 vagrant_ssh() {
+  local offset id
   if [ -z $1 ]; then
     offset=3
   elif [ "$1" = g ]; then
@@ -50,16 +45,17 @@ vagrant_ssh() {
   else
     offset=$(( $1 + 3 ))
   fi
-  id=`vagrant global-status 2>&1 |sed -n "${offset}p;d" |awk '{print $1}'`
-  if [ -z $id ]; then
+  id="$(vagrant global-status 2>&1 | sed -n "${offset}p;d" | awk '{print $1}')"
+  if [ -z "$id" ] ; then
     vagrant global-status
   else
-    vagrant ssh $id
+    vagrant ssh "$id"
   fi
 }
 
 vagrant_destroy() {
-  if [ -z $1 ]; then
+  local offset id
+  if [ -z "$1" ]; then
     offset=3
   elif [ "$1" = g ]; then
     vagrant global-status
@@ -67,17 +63,17 @@ vagrant_destroy() {
   else
     offset=$(( $1 + 3 ))
   fi
-  id=`vagrant global-status 2>&1 |sed -n "${offset}p;d" |awk '{print $1}'`
-  if [ -z $id ]; then
+  id="$(vagrant global-status 2>&1 | sed -n "${offset}p;d" | awk '{print $1}')"
+  if [ -z "$id" ]; then
     vagrant global-status
   else
-    vagrant destroy $id
+    vagrant destroy "$id"
   fi
 }
 
 set_beaker_package_proxy() {
-  ipaddr=$(ifconfig en0 | awk '$1 == "inet" {print $2}')
-  export BEAKER_PACKAGE_PROXY=http://${ipaddr}:3128/
+  ipaddr="$(ifconfig en0 | awk '$1 == "inet" {print $2}')"
+  export BEAKER_PACKAGE_PROXY=http://"$ipaddr":3128/
   echo "BEAKER_PACKAGE_PROXY is $BEAKER_PACKAGE_PROXY"
 }
 export BEAKER_destroy=no
@@ -92,10 +88,11 @@ use_rvm
 echo "RVM is on"
 
 mv_large_files() {
+  local i
   for i in ~/Desktop/*large
   do
-    j=$(echo $i |sed -e 's/.large$//')
-    mv $i $j
+    j="$(sed -e 's/.large$//' <<< "$i")"
+    mv "$i" "$j"
   done
 }
 
