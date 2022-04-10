@@ -1,13 +1,15 @@
 # vim:ft=sh
 
-source ~/.zshrc.secrets
-source ~/.zshrc.cmd
+for file_name in ~/.zshrc.* ; do
+  source "$file_name"
+done
 
-export PATH="$PATH:$GOPATH/bin:/usr/local/packer:/Users/alexharvey/git/home/create_specs:/Users/alexharvey/git/cmd/sync_spec:/Users/alexharvey/git/cmd/cmd-internal/cmd-scripts/git"
 export TERM='xterm-256color'
 
 alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
 alias grpe=grep
+
+alias ls='/bin/ls -F'
 
 remove_trailing_newlines() {
   perl -pli -e 's/\s+$//' "$1"
@@ -103,17 +105,13 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Puppet Blacksmith.
 #
 export BLACKSMITH_FORGE_URL=https://forgeapi.puppetlabs.com
 export BLACKSMITH_FORGE_USERNAME=alexharvey
-
-# Go.
-#
-export GOPATH=$HOME/go
-export g10k_cachedir=/var/tmp
 
 # Antigen / Oh my zsh
 #
