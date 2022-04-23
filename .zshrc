@@ -1,6 +1,7 @@
 # vim:ft=sh
 
 for file_name in ~/.zshrc.* ; do
+  [[ $file_name =~ .zshrc.zwc ]] && continue
   source "$file_name"
 done
 
