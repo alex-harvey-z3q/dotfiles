@@ -156,3 +156,23 @@ antigen apply
 alias grep='/usr/local/Cellar/grep/3.7/libexec/gnubin/grep --color=auto'
 alias grpe='grep'
 alias ls='/bin/ls -F'
+
+# Prompt.
+#
+aws_profile() {
+  local access_key
+  access_key="$(
+    awk -F= '/AWS_ACCESS_KEY_ID/ {print $2}' ~/.zshrc.secrets
+  )"
+  if [[ -n $AWS_ACCESS_KEY_ID ]] ; then
+    if [[ $AWS_ACCESS_KEY_ID = $access_key ]] ; then
+      printf "[personal] "
+    else
+      printf "[$AWS_ACCESS_KEY_ID] "
+    fi
+  elif [[ -n $AWS_PROFILE ]] ; then
+    printf "[$AWS_PROFILE] "
+  fi
+}
+
+export PS1="\$(aws_profile)\$(pwd)$PS1"
