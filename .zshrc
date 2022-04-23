@@ -7,11 +7,6 @@ done
 
 export TERM='xterm-256color'
 
-alias grep='/usr/local/Cellar/grep/3.1/libexec/gnubin/grep --color=auto'
-alias grpe=grep
-
-alias ls='/bin/ls -F'
-
 remove_trailing_newlines() {
   perl -pli -e 's/\s+$//' "$1"
 }
@@ -137,7 +132,10 @@ antigen bundle bundler
 
 # See other themes from https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 antigen theme avit
-
 antigen apply
 
+# Aliases.
+#
+alias grep='/usr/local/Cellar/grep/3.7/libexec/gnubin/grep --color=auto'
+alias grpe='grep'
 alias ls='/bin/ls -F'
