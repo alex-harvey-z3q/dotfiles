@@ -31,6 +31,23 @@ git_grep() {
   git grep "$1" "$(git rev-list --all)"
 }
 
+list_branches() {
+  local OLDIFS input file
+
+  setopt shwordsplit
+  OLDIFS="$IFS"
+  IFS=/
+  input="$1"
+
+  for file in */.git/refs/*/"$input"/* ; do
+    words=($file)
+    printf "%-30s: %s\n" "${words[1]}" "${words[5]}"/"${words[6]}"
+  done
+
+  IFS="$OLDIFS"
+  setopt noshwordsplit
+}
+
 # Beaker.
 #
 vagrant_ssh() {
