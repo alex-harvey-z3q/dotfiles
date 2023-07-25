@@ -15,8 +15,3 @@ autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
   \   exe "normal! g`\"" |
   \ endif
-autocmd Syntax * call SyntaxRange#Include('{{','}}','jinja')
-autocmd Syntax * call SyntaxRange#Include('{%','%}','jinja')
-autocmd Syntax * call SyntaxRange#Include('vim: set ft=js:','vim: set ft=js:','javascript')
-autocmd Syntax * call SyntaxRange#Include('#!/usr/bin/env bash','vim: set ft=sh:','sh')
-autocmd Syntax * call SyntaxRange#Include('#!/usr/bin/env python','vim: set ft=python:','python')
