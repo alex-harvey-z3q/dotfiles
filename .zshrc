@@ -11,6 +11,8 @@ done
 
 export TERM='xterm-256color'
 
+setopt INTERACTIVE_COMMENTS  # Make zsh behave the same as bash if a comment is added in the CLI.
+
 remove_trailing_newlines() {
   perl -pli -e 's/\s+$//' "$1"
 }
