@@ -1,7 +1,11 @@
 # vim:ft=sh
 
+source ~/.zshrc.secrets
+
 for file_name in ~/.zshrc.* ; do
-  [[ $file_name =~ .zshrc.zwc ]] && continue
+  [[ $file_name =~ .zshrc.secrets ]] && continue
+  [[ $file_name =~ .zshrc.zw?     ]] && continue
+  [[ $file_name =~ .zshrc.*.zw?   ]] && continue
   source "$file_name"
 done
 
