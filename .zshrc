@@ -1,5 +1,7 @@
 # vim:ft=sh
 
+# shellcheck disable=SC2148,SC1090
+
 source ~/.zshrc.secrets
 
 for file_name in ~/.zshrc.* ; do
@@ -17,18 +19,12 @@ remove_trailing_newlines() {
   perl -pli -e 's/\s+$//' "$1"
 }
 
-commit_todo() {
-  cd ~/Documents/todo
-  bash commit.sh
-  cd -
-}
-
 replace_all() {
   local search replace file_name
 
   if [[ -z "$2" ]] ; then
     echo "Usage: replace_all SEARCH REPLACE"
-    echo "Replace all occurences of SEARCH with REPLACE\nin a directory"
+    printf "Replace all occurences of SEARCH with REPLACE\nin a directory\n"
     return 1
   fi
 
@@ -63,7 +59,8 @@ hash_diff() {
 alias recommit='git reset --soft HEAD~ ; git add . ; git commit -e -F .git/COMMIT_EDITMSG'
 
 rebase() {
-  local branch="$(git branch | awk '/^\*/ {print $2}')"
+  local branch
+  branch="$(git branch | awk '/^\*/ {print $2}')"
   git checkout master
   git pull
   git checkout "$branch"
@@ -71,7 +68,7 @@ rebase() {
 }
 
 delete_all_merged_branchs() {
-  git branch --merged | egrep -v "(^\*|master$)" | xargs git branch -d
+  git branch --merged | grep -Ev "(^\*|master$)" | xargs git branch -d
 }
 
 git_grep() {
@@ -92,7 +89,7 @@ list_branches() {
   fi
 
   for file in */.git/refs/*/"$input"/* ; do
-    words=($file)
+    words=("$file")
     remote="$(awk '/url =/ {print $3; exit}' "${words[1]}"/.git/config)"
     printf "%-30s: %-30s : %s\n" "${words[1]}" "$remote" "${words[5]}"/"${words[6]}"
   done
@@ -118,7 +115,7 @@ select_terraform() {
       count += 1
     }'
 
-  read ans
+  read -r ans
 
   version="$(
     command ls -1 /usr/local/bin/terraform_* | \
@@ -132,7 +129,7 @@ select_terraform() {
 
   rm -f /usr/local/bin/terraform
 
-  cp /usr/local/bin/terraform_"$version" \
+  sudo cp /usr/local/bin/terraform_"$version" \
     /usr/local/bin/terraform
 }
 
@@ -140,9 +137,9 @@ install_terraform() {
   local version url basename bin os arch
 
   if [[ -z "$1" ]] || [[ "$1" = "-h" ]] ; then
-      echo "Usage: install_terraform VERSION"
-      echo "E.g. install_terraform 1.4.5"
-      return
+    echo "Usage: install_terraform VERSION"
+    echo "E.g. install_terraform 1.4.5"
+    return
   fi
 
   os="$(uname | tr '[:upper:]' '[:lower:]')"
@@ -151,10 +148,10 @@ install_terraform() {
   case "$arch" in
     x86_64)  arch="amd64" ;;
     i*86)    arch="386"   ;;
-    *)
-      echo "Unknown architecture $arch"
-      return
-      ;;
+    arm64)   arch="arm64" ;;
+    *) echo "Unknown architecture $arch"
+       return
+       ;;
   esac
 
   version="${1#v}"
@@ -165,7 +162,7 @@ install_terraform() {
   wget "$url"
   unzip "$basename"
 
-  mv terraform "$bin" && \
+  sudo mv terraform "$bin" && \
     echo "Terraform $version successfully installed in $bin"
 }
 
@@ -173,7 +170,7 @@ install_terraform() {
 #
 vagrant_ssh() {
   local offset id
-  if [ -z $1 ]; then
+  if [ -z "$1" ]; then
     offset=3
   elif [ "$1" = g ]; then
     vagrant global-status
@@ -232,7 +229,7 @@ fi
 
 # Poetry.
 #
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 
 # Puppet Blacksmith.
 #
@@ -241,27 +238,45 @@ export BLACKSMITH_FORGE_USERNAME=alexharvey
 
 ## Puppet.
 #
-export PATH=/opt/puppetlabs/puppet/bin:/opt/puppetlabs/pdk/bin:"$PATH"
+export PATH="$PATH":/opt/puppetlabs/puppet/bin
 
 # Aliases.
 #
-alias grep='/usr/local/Cellar/grep/3.7/libexec/gnubin/grep --color=auto'
-alias grpe='grep'
-alias diff='/usr/local/bin/diff --color=always'
+brew_prefix="$(brew --prefix)"
+
+# shellcheck disable=SC2139
+alias grep="$brew_prefix/bin/ggrep --color=auto"
+alias grpe="grep"
+alias diff='diff --color=always'
 alias ls='/bin/ls -F'
-alias sed='/usr/local/bin/gsed'
-alias vim='/usr/local/bin/vim'
+# shellcheck disable=SC2139
+alias sed="$brew_prefix/bin/gsed"
+# shellcheck disable=SC2139
+alias vim="$brew_prefix/bin/vim"
 
-# Docker
-#
-if [[ ! -d ~/.zsh/completion/ ]] ; then
-  mkdir -p ~/.zsh/completion/
-  ln -s /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion ~/.zsh/completion/_docker
-  ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion ~/.zsh/completion/_docker-compose
+# Zsh completion
+
+# Ensure system zsh functions are on fpath
+if [[ -d /usr/share/zsh/"$ZSH_VERSION"/functions ]]; then
+  # shellcheck disable=SC2206
+  fpath=(/usr/share/zsh/"$ZSH_VERSION"/functions $fpath)
+elif [[ -d /usr/share/zsh/functions ]]; then
+  # shellcheck disable=SC2206,SC2128
+  fpath=(/usr/share/zsh/functions $fpath)
 fi
-fpath=($fpath ~/.zsh/completion)
 
-export PS1='%n %1~ %# '
+# Optionally add Homebrew/site functions
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  # shellcheck disable=SC2206,SC2128
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+elif [[ -d /usr/local/share/zsh/site-functions ]]; then
+  # shellcheck disable=SC2206,SC2128
+  fpath=(/usr/local/share/zsh/site-functions $fpath)
+fi
 
-autoload -U select-word-style
-select-word-style bash
+autoload -Uz compinit
+# don't touch .zcompdump; stay away from stale caches
+compinit -D
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
