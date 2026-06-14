@@ -1,17 +1,21 @@
-[includeIf "gitdir:~/git/home/**"]
-  path = .gitconfig-home
-
-[includeIf "gitdir:~/git/cmd/**"]
-  path = .gitconfig-cmd
-
-[includeIf "gitdir:~/git/nab/**"]
-  path = .gitconfig-nab
-
-[includeIf "gitdir:~/git/fox/**"]
-  path = .gitconfig-fox
-
-[includeIf "gitdir:~/git/quadnova/**"]
-  path = .gitconfig-quadnova
+# Keep machine- and site-specific directory mappings outside this repo.
+#
+# Example ~/.gitconfig.local:
+#
+# [includeIf "gitdir:~/git/somesite/**"]
+#   path = ~/.gitconfig-somesite
+#
+# Each included file can contain:
+#
+# [user]
+#   name = Your Name
+#   email = you@example.com
+#
+# [core]
+#   sshCommand = ssh -i ~/.ssh/id_example -o IdentitiesOnly=yes
+#
+[include]
+  path = ~/.gitconfig.local
 
 [alias]
 	co = checkout
@@ -21,5 +25,3 @@
 
 [color]
 	ui = auto
-[user]
-	email = alex.harvey.z3q@gmail.com
