@@ -1,0 +1,60 @@
+# shellcheck disable=SC2148
+
+# Example per-site shell configuration.
+# Copy this file to ~/.zshrc.SITE_NAME and customise it as needed.
+
+## Git Commands
+
+_git_branch() {
+  git symbolic-ref --short HEAD
+}
+
+alias ga='git add .'
+
+gs() {
+  local git_branch
+  git_branch="$(_git_branch)"
+  git checkout master
+  git pull origin master
+  git checkout "$git_branch"
+  git merge master
+}
+
+gc() {
+  local message="$1"
+
+  if [[ -z "$message" ]]; then
+    echo "Usage: gc COMMIT_MESSAGE"
+    return
+  fi
+
+  if ! git status --porcelain | grep -E '^(A|M|D|R)' ; then
+    echo "No changes staged for commit."
+    echo "Stage your changes using git add."
+    return
+  fi
+
+  git commit -m "$message"
+}
+
+gb() {
+  local branch_name="$1"
+  local git_command=(git checkout)
+
+  if [[ -z "$branch_name" ]]; then
+    echo "Usage: gb BRANCH_NAME"
+    return
+  fi
+
+  if ! git show-ref --verify --quiet refs/heads/"$branch_name"; then
+    git_command+=(-b)
+  fi
+
+  git_command+=("$branch_name")
+
+  "${git_command[@]}"
+}
+
+gp() {
+  git push origin "$(_git_branch)"
+}
