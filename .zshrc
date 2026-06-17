@@ -15,6 +15,10 @@ export TERM='xterm-256color'
 
 setopt INTERACTIVE_COMMENTS  # Make zsh behave the same as bash if a comment is added in the CLI.
 
+join_wifi() {
+  networksetup -setairportnetwork en0 "Alex’s iPhone" "$ALEX_IPHONE_WIFI_PASSWORD"
+}
+
 remove_trailing_newlines() {
   perl -pli -e 's/\s+$//' "$1"
 }
@@ -52,6 +56,20 @@ hash_diff() {
 
   ruby -rhashdiff -rawesome_print -ryaml \
     -e "ap Hashdiff.diff(*ARGV.map{|f| YAML.load_file(f)})" "$1" "$2"
+}
+
+untar_latest_download() {
+  local files latest
+
+  files=("$HOME"/Downloads/*(.N.om[1]))
+  latest="$files[1]"
+
+  if [[ -z "$latest" ]]; then
+    echo "No files found in ~/Downloads"
+    return 1
+  fi
+
+  tar zxvf "$latest"
 }
 
 # Git functions.
