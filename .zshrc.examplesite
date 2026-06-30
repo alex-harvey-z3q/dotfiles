@@ -23,18 +23,17 @@ gs() {
 gc() {
   local message="$1"
 
-  if [[ -z "$message" ]]; then
-    echo "Usage: gc COMMIT_MESSAGE"
-    return
-  fi
-
   if ! git status --porcelain | grep -E '^(A|M|D|R)' ; then
     echo "No changes staged for commit."
     echo "Stage your changes using git add."
     return
   fi
 
-  git commit -m "$message"
+  if [[ -z "$message" ]]; then
+    git commit
+  else
+    git commit -m "$message"
+  fi
 }
 
 gb() {
