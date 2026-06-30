@@ -21,7 +21,7 @@
 	co = checkout
 	br = branch
 	st = status
-	pm = pull origin master
+	pm = pull origin main
 
 [color]
 	ui = auto
