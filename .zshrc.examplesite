@@ -59,5 +59,11 @@ gb() {
 }
 
 gp() {
-  git push origin "$(get_git_branch)"
+  local branch remote
+
+  branch="$(get_git_branch)" || return
+  remote="$(git config "branch.$branch.remote")"
+  [[ -z "$remote" ]] && remote=origin
+
+  git push "$remote" "$branch" "$@"
 }
